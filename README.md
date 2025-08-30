@@ -31,6 +31,4 @@ FinanzasPro is a modern, responsive web interface designed to visualize and orga
    ```bash
    npm run dev
 
-📌 Note
-This is a frontend-only project — no backend or database integration is included.
 
