@@ -8,8 +8,6 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import toast from 'react-hot-toast';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -23,7 +21,6 @@ interface SearchResult {
 
 const Header = ({ toggleSidebar }: HeaderProps) => {
   const navigate = useNavigate();
-  const { signOut, user } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,10 +82,7 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
   };
 
   const handleLogout = () => {
-    signOut().then(() => {
-      toast.success('Sesión cerrada exitosamente');
-      navigate('/');
-    });
+    navigate('/');
   };
 
   return (
@@ -199,9 +193,7 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
               <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700">
                 <User size={18} />
               </div>
-              <span className="hidden md:block font-medium">
-                {user?.email?.split('@')[0] || 'Usuario'}
-              </span>
+              <span className="hidden md:block font-medium">Usuario</span>
             </button>
             
             {/* User Menu Dropdown */}
