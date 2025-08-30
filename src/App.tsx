@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import DashboardLayout from './components/layout/DashboardLayout';
 import GuidedTour from './components/GuidedTour';
 import Landing from './pages/Landing';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Sales from './pages/Sales';
@@ -19,6 +22,9 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showTour, setShowTour] = useState(false);
 
+  // 👇 Aquí inicializamos navigate
+  const navigate = useNavigate();
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -28,7 +34,7 @@ function App() {
   };
 
   return (
-    <>
+    <AuthProvider>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -37,7 +43,8 @@ function App() {
           style: {
             background: '#fff',
             color: '#363636',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            boxShadow:
+              '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
             borderRadius: '0.5rem',
             padding: '1rem',
           },
@@ -57,14 +64,17 @@ function App() {
       />
       <GuidedTour isOpen={showTour} onClose={() => setShowTour(false)} />
       <Routes>
-        <Route path="/" element={<Landing onStartDemo={startTour} />} />
-        <Route 
-          path="/app" 
+        <Route path="/" element={<Landing onStartDemo={() => navigate('/login')} />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/app"
           element={
-            <DashboardLayout 
-              isSidebarOpen={isSidebarOpen}
-              toggleSidebar={toggleSidebar}
-            />
+            <ProtectedRoute>
+              <DashboardLayout
+                isSidebarOpen={isSidebarOpen}
+                toggleSidebar={toggleSidebar}
+              />
+            </ProtectedRoute>
           }
         >
           <Route index element={<Navigate to="/app/dashboard" replace />} />
@@ -80,7 +90,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

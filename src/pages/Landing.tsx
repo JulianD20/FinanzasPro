@@ -24,7 +24,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
-const Landing = () => {
+interface LandingProps {
+  onStartDemo: () => void;
+}
+
+const Landing = ({ onStartDemo }: LandingProps) => {
   const navigate = useNavigate();
 
   const features = [
@@ -136,7 +140,7 @@ const Landing = () => {
                 Contacto
               </a>
               <button 
-                onClick={() => navigate('/app/dashboard')}
+                onClick={onStartDemo}
                 className="px-6 py-2.5 text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 Ver Demo
@@ -168,7 +172,7 @@ const Landing = () => {
               </p>
               <div className="flex items-center space-x-4">
                 <button 
-                  onClick={() => navigate('/app/dashboard')}
+                  onClick={onStartDemo}
                   className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-xl"
                 >
                   Ver Demo
@@ -416,7 +420,7 @@ const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              onClick={() => navigate('/app/dashboard')}
+              onClick={onStartDemo}
               className="px-8 py-4 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
               Comenzar Ahora
